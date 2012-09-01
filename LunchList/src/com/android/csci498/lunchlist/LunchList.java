@@ -9,7 +9,7 @@ public class LunchList extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lunch_list);
+        setContentView(R.layout.main);
     }
 
     @Override
