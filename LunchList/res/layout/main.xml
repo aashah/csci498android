@@ -1,62 +1,78 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:stretchColumns="1" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
+    <TableRow>
+
+        <TextView android:text="Name:" />
+
+        <EditText android:id="@+id/name" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView android:text="Address:" />
+
+        <EditText android:id="@+id/addr" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" >
+        android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name:" />
+            android:text="Type:" />
 
-        <EditText
-            android:id="@+id/name"
+        <ScrollView
+            android:id="@+id/scrollView1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10" >
+            android:layout_height="wrap_content" >
 
-            <requestFocus />
-        </EditText>
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/linearLayout1" >
+                <RadioGroup
+                    android:id="@+id/types"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Address:" />
+                    <RadioButton
+                        android:id="@+id/take_out"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Take Out" />
 
-        <EditText
-            android:id="@+id/addr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10" />
-    </LinearLayout>
+                    <RadioButton
+                        android:id="@+id/sit_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sit-Down" />
 
-    <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/linearLayout2"
-        android:text="Save" />
+                    <RadioButton
+                        android:id="@+id/delivery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delivery" />
+                </RadioGroup>
 
-</RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+
+  </TableRow>
+
+  <Button android:id="@+id/save"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Save"
+  />
+
+</TableLayout>
