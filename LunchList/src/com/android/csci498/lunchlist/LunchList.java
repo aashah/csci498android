@@ -78,4 +78,12 @@ public class LunchList extends Activity {
         getMenuInflater().inflate(R.menu.activity_lunch_list, menu);
         return true;
     }
+    
+    class RestaurantAdapter extends ArrayAdapter<Restaurant> {
+    	  RestaurantAdapter() {
+    	    super(LunchList.this,
+    	          android.R.layout.simple_list_item_1,
+    	          model);
+    	  }
+    	}
 }
