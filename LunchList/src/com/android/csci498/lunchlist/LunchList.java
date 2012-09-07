@@ -3,30 +3,39 @@ package com.android.csci498.lunchlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
+import android.app.TabActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.TabHost;
 import android.widget.TextView;
 
-public class LunchList extends Activity {
+public class LunchList extends TabActivity {
 	
 	List<Restaurant> model = new ArrayList<Restaurant>();
 	RestaurantAdapter adapter = null;
 	
+	EditText name = null;
+	EditText address = null;
+	RadioGroup types = null;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        this.name = (EditText) findViewById(R.id.name);
+        this.address = (EditText) findViewById(R.id.addr);
+        this.types = (RadioGroup) findViewById(R.id.types);;
         
         Button save = (Button) findViewById(R.id.save);
         save.setOnClickListener(onSave);
@@ -34,19 +43,29 @@ public class LunchList extends Activity {
         ListView list = (ListView) findViewById(R.id.restaurants);
         adapter = new RestaurantAdapter();
         list.setAdapter(adapter);
+        list.setOnItemClickListener(onListClick);
+        
+        TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
+        spec.setContent(R.id.restaurants);
+        spec.setIndicator("List", getResources()
+                                   .getDrawable(R.drawable.list));
+        getTabHost().addTab(spec);
+        spec = getTabHost().newTabSpec("tag2");
+        spec.setContent(R.id.details);
+        spec.setIndicator("Details", getResources()
+                                     .getDrawable(R.drawable.restaurant));
+        getTabHost().addTab(spec);
+        getTabHost().setCurrentTab(0);
         
     }
 
     private View.OnClickListener onSave = new View.OnClickListener() {
 		public void onClick(View v) {
 			Restaurant r = new Restaurant();
-			EditText name = (EditText) findViewById(R.id.name);
-			EditText address = (EditText) findViewById(R.id.addr);
 			
 			r.setName(name.getText().toString());
 			r.setAddress(address.getText().toString());
 			
-			RadioGroup types = (RadioGroup) findViewById(R.id.types);
 			switch (types.getCheckedRadioButtonId()) {
 				case R.id.sit_down:
 					r.setType("sit_down");
@@ -61,6 +80,28 @@ public class LunchList extends Activity {
 			adapter.add(r);
 		}
 	};
+	
+	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			Restaurant r = model.get(position);
+			
+			name.setText(r.getName());
+			address.setText(r.getAddress());
+			
+			if (r.getType().equals("sit_down")) {
+				types.check(R.id.sit_down);
+			} else if (r.getType().equals("take_out")) {
+				types.check(R.id.take_out);
+			} else {
+				types.check(R.id.delivery);
+			}
+		}
+		
+	};
+	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_lunch_list, menu);
