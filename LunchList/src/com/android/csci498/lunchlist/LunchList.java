@@ -37,6 +37,8 @@ public class LunchList extends TabActivity {
         this.address = (EditText) findViewById(R.id.addr);
         this.types = (RadioGroup) findViewById(R.id.types);;
         
+        
+        //TODO: cleanup onCreate()
         Button save = (Button) findViewById(R.id.save);
         save.setOnClickListener(onSave);
         
