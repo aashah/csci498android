@@ -27,6 +27,7 @@ public class LunchList extends TabActivity {
 	EditText name = null;
 	EditText address = null;
 	RadioGroup types = null;
+	EditText notes = null;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,10 @@ public class LunchList extends TabActivity {
         
         this.name = (EditText) findViewById(R.id.name);
         this.address = (EditText) findViewById(R.id.addr);
-        this.types = (RadioGroup) findViewById(R.id.types);;
+        this.types = (RadioGroup) findViewById(R.id.types);
+        this.notes = (EditText) findViewById(R.id.notes);
         
-        
-        //TODO: cleanup onCreate()
+        //TODO: cleanup onCreate
         Button save = (Button) findViewById(R.id.save);
         save.setOnClickListener(onSave);
         
@@ -78,7 +79,8 @@ public class LunchList extends TabActivity {
 				case R.id.delivery:
 					r.setType("delivery");
 					break;
-			}
+			}			
+			r.setNotes(notes.getText().toString());
 			adapter.add(r);
 		}
 	};
@@ -100,6 +102,7 @@ public class LunchList extends TabActivity {
 			} else {
 				types.check(R.id.delivery);
 			}
+			notes.setText(r.getNotes());
 			getTabHost().setCurrentTab(1);
 		}
 		
@@ -107,7 +110,7 @@ public class LunchList extends TabActivity {
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_lunch_list, menu);
+        getMenuInflater().inflate(R.menu.option, menu);
         return true;
     }
     
