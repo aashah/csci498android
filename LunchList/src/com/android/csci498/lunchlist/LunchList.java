@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.TabActivity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,15 +30,17 @@ public class LunchList extends TabActivity {
 	List<Restaurant> model = new ArrayList<Restaurant>();
 	RestaurantAdapter adapter = null;
 	
-	EditText name = null;
-	EditText address = null;
-	RadioGroup types = null;
-	EditText notes = null;
-	Restaurant current = null;
+	private EditText name = null;
+	private EditText address = null;
+	private RadioGroup types = null;
+	private EditText notes = null;
+	private Restaurant current = null;
+	private int progress;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.main);
         
         Log.i("LunchList", "Starting up application");
@@ -68,6 +72,19 @@ public class LunchList extends TabActivity {
         getTabHost().setCurrentTab(0);
         
     }
+    
+    private Runnable longTask = new Runnable() {
+    	public void run() {
+    		for (int i = 0; i < 20; ++i) {
+    			doSomeLongWork(500);
+    		}
+    		runOnUiThread(new Runnable() {
+    			public void run() {
+    				setProgressBarVisibility(false);
+    			}
+    		});
+    	}
+    };
 
     private View.OnClickListener onSave = new View.OnClickListener() {
 		public void onClick(View v) {
@@ -134,9 +151,23 @@ public class LunchList extends TabActivity {
     			Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     		}
     		return true;
+    	} else if (item.getItemId() == R.id.run) {
+    		setProgressBarVisibility(true);
+    		this.progress = 0;
+    		new Thread(longTask).start();
     	}
     	
     	return (super.onOptionsItemSelected(item));
+    }
+    
+    private void doSomeLongWork(final int incr) {
+    	runOnUiThread(new Runnable() {
+    		public void run() {
+    			progress += incr;
+    			setProgress(progress);
+    		}
+    	});
+    	SystemClock.sleep(250);
     }
     
     static class RestaurantHolder {
