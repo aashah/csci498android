@@ -2,6 +2,7 @@ package com.android.csci498.lunchlist;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.app.TabActivity;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class LunchList extends TabActivity {
 	private Restaurant current = null;
 	private int progress;
 	
+	private AtomicBoolean isActive = new AtomicBoolean();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,17 +77,20 @@ public class LunchList extends TabActivity {
     
     private Runnable longTask = new Runnable() {
     	public void run() {
-    		for (int i = 0; i < 20; ++i) {
-    			doSomeLongWork(500);
+    		for (int i = 0; i < 10000 && isActive.get(); i+=200) {
+    			doSomeLongWork(200);
     		}
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				setProgressBarVisibility(false);
-    			}
-    		});
+    		if (isActive.get()) {
+	    		runOnUiThread(new Runnable() {
+	    			public void run() {
+	    				setProgressBarVisibility(false);
+	    				progress = 0;
+	    			}
+	    		});
+    		}
     	}
     };
-
+    
     private View.OnClickListener onSave = new View.OnClickListener() {
 		public void onClick(View v) {
 			current = new Restaurant();
@@ -132,6 +137,20 @@ public class LunchList extends TabActivity {
 		
 	};
 	
+	@Override
+	public void onPause() {
+		super.onPause();
+		isActive.set(false);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		isActive.set(true);
+		if (progress > 0) {
+			startWork();
+		}
+	}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //getMenuInflater().inflate(R.menu.option, menu);
@@ -152,9 +171,7 @@ public class LunchList extends TabActivity {
     		}
     		return true;
     	} else if (item.getItemId() == R.id.run) {
-    		setProgressBarVisibility(true);
-    		this.progress = 0;
-    		new Thread(longTask).start();
+    		startWork();
     	}
     	
     	return (super.onOptionsItemSelected(item));
@@ -168,6 +185,11 @@ public class LunchList extends TabActivity {
     		}
     	});
     	SystemClock.sleep(250);
+    }
+    
+    private void startWork() {
+    	setProgressBarVisibility(true);
+    	new Thread(longTask).start();
     }
     
     static class RestaurantHolder {
