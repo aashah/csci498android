@@ -4,5 +4,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_lunch_list">LunchList</string>
+    <!--  Form Strings -->
+    <string name="type_take_out">Take Out</string>
+    <string name="type_sit_down">Sit Down</string>
+    <string name="type_delivery">Delivery</string>
+    <string name="button_save">Save</string>
 
 </resources>

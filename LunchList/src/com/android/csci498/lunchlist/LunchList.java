@@ -102,7 +102,7 @@ public class LunchList extends TabActivity {
 					current.setType("sit_down");
 					break;
 				case R.id.take_out:
-					current.setType("take_out");
+					current.setType("@string/type_take_out");
 					break;
 				case R.id.delivery:
 					current.setType("delivery");
