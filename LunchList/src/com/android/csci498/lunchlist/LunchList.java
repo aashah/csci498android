@@ -37,20 +37,30 @@ public class LunchList extends TabActivity {
 	private EditText notes = null;
 	private Restaurant current = null;
 	
+	private RestaurantHelper helper = null;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.main);
         
         Log.i("LunchList", "Starting up application");
         
+        retrieveFormHandlers();
+        registerEventHandlers();
+        setupTabLayout();
+        
+        helper = new RestaurantHelper(this);
+    }
+    
+    private void retrieveFormHandlers() {
         this.name = (EditText) findViewById(R.id.name);
         this.address = (EditText) findViewById(R.id.addr);
         this.types = (RadioGroup) findViewById(R.id.types);
         this.notes = (EditText) findViewById(R.id.notes);
-        
-        //TODO: cleanup onCreate
+    }
+    
+    private void registerEventHandlers() {
         Button save = (Button) findViewById(R.id.save);
         save.setOnClickListener(onSave);
         
@@ -58,7 +68,9 @@ public class LunchList extends TabActivity {
         adapter = new RestaurantAdapter();
         list.setAdapter(adapter);
         list.setOnItemClickListener(onListClick);
-        
+    }
+    
+    private void setupTabLayout() {
         TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
         spec.setContent(R.id.restaurants);
         spec.setIndicator("List", getResources()
@@ -70,7 +82,6 @@ public class LunchList extends TabActivity {
                                      .getDrawable(R.drawable.restaurant));
         getTabHost().addTab(spec);
         getTabHost().setCurrentTab(0);
-        
     }
     
 	@Override
@@ -83,26 +94,32 @@ public class LunchList extends TabActivity {
 		super.onResume();	
 	}
     
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		helper.close();
+	}
+	
     private View.OnClickListener onSave = new View.OnClickListener() {
 		public void onClick(View v) {
-			current = new Restaurant();
+			String type = null;
 			
-			current.setName(name.getText().toString());
-			current.setAddress(address.getText().toString());			
 			switch (types.getCheckedRadioButtonId()) {
 				case R.id.sit_down:
-					current.setType("sit_down");
+					type = "@string/type_take_out";
 					break;
 				case R.id.take_out:
-					current.setType("@string/type_take_out");
+					type = "@string/type_sit_down";
 					break;
 				case R.id.delivery:
-					current.setType("delivery");
+					type = "@string/type_delivery";
 					break;
-			}			
-			current.setNotes(notes.getText().toString());
+			}
 			
-			adapter.add(current);
+			helper.insert(name.getText().toString(), 
+						address.getText().toString(), 
+						type, 
+						notes.getText().toString());
 		}
 	};
 	
