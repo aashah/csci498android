@@ -36,9 +36,10 @@ public class LunchList extends TabActivity {
 	private RadioGroup types = null;
 	private EditText notes = null;
 	private Restaurant current = null;
-	private int progress;
 	
+	private int progress;
 	private AtomicBoolean isActive = new AtomicBoolean();
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +76,21 @@ public class LunchList extends TabActivity {
         
     }
     
+	@Override
+	public void onPause() {
+		super.onPause();
+		isActive.set(false);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		isActive.set(true);
+		if (progress > 0) {
+			startWork();
+		}
+	}
+	
     private Runnable longTask = new Runnable() {
     	public void run() {
     		for (int i = 0; i < 10000 && isActive.get(); i+=200) {
@@ -136,22 +152,8 @@ public class LunchList extends TabActivity {
 		}
 		
 	};
-	
+ 
 	@Override
-	public void onPause() {
-		super.onPause();
-		isActive.set(false);
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		isActive.set(true);
-		if (progress > 0) {
-			startWork();
-		}
-	}
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //getMenuInflater().inflate(R.menu.option, menu);
         //return true;
@@ -217,27 +219,27 @@ public class LunchList extends TabActivity {
     }
     
     class RestaurantAdapter extends ArrayAdapter<Restaurant> {
-    	  RestaurantAdapter() {
-    	    super(LunchList.this,
-    	          android.R.layout.simple_list_item_1,
-    	          model);
-    	  }
-    	  public View getView(int position, View convertView, ViewGroup parent) {
-    		  View row = convertView;
-    		  RestaurantHolder holder = null;
-    		  
-    		  if (row == null) {
-    			  LayoutInflater inflater = getLayoutInflater();
-    			  row = inflater.inflate(R.layout.row, null);
-    			  
-    			  holder = new RestaurantHolder(row);
-    			  row.setTag(holder);    			  
-    		  } else {	
-    			  holder = (RestaurantHolder)row.getTag();
-    		  }
-    		  
-    		  holder.populateFrom(model.get(position));
-    		  return row;
-    	  }
+    	RestaurantAdapter() {
+    		super(LunchList.this,
+    				android.R.layout.simple_list_item_1,
+    				model);
     	}
+    	public View getView(int position, View convertView, ViewGroup parent) {
+    		View row = convertView;
+    		RestaurantHolder holder = null;
+
+    		if (row == null) {
+    			LayoutInflater inflater = getLayoutInflater();
+    			row = inflater.inflate(R.layout.row, null);
+
+    			holder = new RestaurantHolder(row);
+    			row.setTag(holder);    			  
+    		} else {	
+    			holder = (RestaurantHolder)row.getTag();
+    		}
+
+    		holder.populateFrom(model.get(position));
+    		return row;
+    	}
+    }
 }
