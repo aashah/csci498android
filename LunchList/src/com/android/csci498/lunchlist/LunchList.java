@@ -28,8 +28,8 @@ public class LunchList extends TabActivity {
 	
 	private EditText name = null;
 	private EditText address = null;
-	private RadioGroup types = null;
 	private EditText notes = null;
+	private RadioGroup types = null;
 	private Restaurant current = null;
 	
 	private RestaurantHelper helper = null;
