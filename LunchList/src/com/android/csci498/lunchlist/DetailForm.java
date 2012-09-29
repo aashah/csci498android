@@ -9,12 +9,17 @@ import android.widget.RadioGroup;
 
 public class DetailForm extends Activity {
 	
+	
+	
 	EditText name = null;
 	EditText address = null;
 	EditText notes = null;
 	RadioGroup types = null;
 	
 	RestaurantHelper helper = null;
+	
+	String restaurantId = null;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,6 +27,7 @@ public class DetailForm extends Activity {
 		
         retrieveFormHandlers();
         registerEventHandlers();
+        processIntentData();
 	}
 	
 	public void retrieveFormHandlers() {
@@ -35,6 +41,10 @@ public class DetailForm extends Activity {
 		helper = new RestaurantHelper(this);
 		Button save = (Button) findViewById(R.id.save);
 		save.setOnClickListener(onSave);
+	}
+	
+	public void processIntentData() {
+		restaurantId = getIntent().getStringExtra(LunchList.ID_EXTRA);
 	}
 	
 	private View.OnClickListener onSave = new View.OnClickListener() {
