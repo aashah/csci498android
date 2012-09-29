@@ -1,24 +1,17 @@
 package com.android.csci498.lunchlist;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import android.app.TabActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
@@ -27,7 +20,6 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LunchList extends TabActivity {
 	
@@ -137,6 +129,11 @@ public class LunchList extends TabActivity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			
+			
+			Intent i = new Intent(LunchList.this, DetailForm.class);
+			startActivity(i);
+			
+			/* stub for dealing with later
 			model.moveToPosition(position);
 			
 			name.setText(helper.getName(model));
@@ -152,6 +149,7 @@ public class LunchList extends TabActivity {
 			}
 			
 			getTabHost().setCurrentTab(1);
+			*/
 		}
 		
 	};
