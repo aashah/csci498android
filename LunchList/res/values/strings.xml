@@ -8,6 +8,7 @@
     <string name="type_take_out">Take Out</string>
     <string name="type_sit_down">Sit Down</string>
     <string name="type_delivery">Delivery</string>
+    <string name="notes_label">Notes: </string>
     <string name="button_save">Save</string>
 
 </resources>
