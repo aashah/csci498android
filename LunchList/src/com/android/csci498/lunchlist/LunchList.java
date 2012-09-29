@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.app.TabActivity;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -28,7 +31,7 @@ import android.widget.Toast;
 
 public class LunchList extends TabActivity {
 	
-	List<Restaurant> model = new ArrayList<Restaurant>();
+	Cursor model;
 	RestaurantAdapter adapter = null;
 	
 	private EditText name = null;
@@ -50,7 +53,7 @@ public class LunchList extends TabActivity {
         registerEventHandlers();
         setupTabLayout();
         
-        helper = new RestaurantHelper(this);
+       
     }
     
     private void retrieveFormHandlers() {
@@ -64,8 +67,12 @@ public class LunchList extends TabActivity {
         Button save = (Button) findViewById(R.id.save);
         save.setOnClickListener(onSave);
         
+        helper = new RestaurantHelper(this);        
+        model = helper.getAll();
+        startManagingCursor(model);
+        adapter = new RestaurantAdapter(model);
+        
         ListView list = (ListView) findViewById(R.id.restaurants);
-        adapter = new RestaurantAdapter();
         list.setAdapter(adapter);
         list.setOnItemClickListener(onListClick);
     }
@@ -120,6 +127,7 @@ public class LunchList extends TabActivity {
 						address.getText().toString(), 
 						type, 
 						notes.getText().toString());
+			model.requery();
 		}
 	};
 	
@@ -128,19 +136,21 @@ public class LunchList extends TabActivity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			current = model.get(position);
 			
-			name.setText(current.getName());
-			address.setText(current.getAddress());
+			model.moveToPosition(position);
 			
-			if (current.getType().equals("sit_down")) {
+			name.setText(helper.getName(model));
+			address.setText(helper.getAddress(model));
+			notes.setText(helper.getNotes(model));
+			
+			if (helper.getType(model).equals("sit_down")) {
 				types.check(R.id.sit_down);
-			} else if (current.getType().equals("take_out")) {
+			} else if (helper.getType(model).equals("take_out")) {
 				types.check(R.id.take_out);
 			} else {
 				types.check(R.id.delivery);
 			}
-			notes.setText(current.getNotes());
+			
 			getTabHost().setCurrentTab(1);
 		}
 		
@@ -167,41 +177,39 @@ public class LunchList extends TabActivity {
     		icon = (ImageView) row.findViewById(R.id.icon);
     	}
     	
-    	void populateFrom(Restaurant r) {
-    		name.setText(r.getName());
-    		address.setText(r.getAddress());
-    		if (r.getType().equals("sit_down")) {
+    	void populateFrom(Cursor c, RestaurantHelper helper) {
+    		
+    		name.setText(helper.getName(c));
+    		address.setText(helper.getAddress(c));
+    		
+    		if (helper.getType(c).equals("@string/type_sit_down")) {
     			icon.setImageResource(R.drawable.ball_red);
-    		} else if (r.getType().equals("take_out")) {
+    		} else if (helper.getType(c).equals("@string/type_take_out")) {
     			icon.setImageResource(R.drawable.ball_yellow);
     		} else {
     			icon.setImageResource(R.drawable.ball_green);
     		}
     	}
     }
-    
-    class RestaurantAdapter extends ArrayAdapter<Restaurant> {
-    	RestaurantAdapter() {
-    		super(LunchList.this,
-    				android.R.layout.simple_list_item_1,
-    				model);
-    	}
-    	public View getView(int position, View convertView, ViewGroup parent) {
-    		View row = convertView;
-    		RestaurantHolder holder = null;
+    class RestaurantAdapter extends CursorAdapter {
+    	public RestaurantAdapter(Cursor c) {
+			super(LunchList.this, c);
+		}
 
-    		if (row == null) {
-    			LayoutInflater inflater = getLayoutInflater();
-    			row = inflater.inflate(R.layout.row, null);
+		@Override
+		public void bindView(View row, Context ctxt, Cursor c) {
+			RestaurantHolder holder = (RestaurantHolder) row.getTag();
+			holder.populateFrom(c, helper);
+			
+		}
 
-    			holder = new RestaurantHolder(row);
-    			row.setTag(holder);    			  
-    		} else {	
-    			holder = (RestaurantHolder)row.getTag();
-    		}
-
-    		holder.populateFrom(model.get(position));
-    		return row;
-    	}
+		@Override
+		public View newView(Context ctxt, Cursor c, ViewGroup parent) {
+			LayoutInflater inflater = getLayoutInflater();
+			View row = inflater.inflate(R.layout.row, parent, false);
+			RestaurantHolder holder = new RestaurantHolder(row);
+			row.setTag(holder);
+			return row;
+		}
     }
 }
