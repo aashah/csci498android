@@ -3,8 +3,10 @@ package com.android.csci498.lunchlist;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +36,8 @@ public class LunchList extends ListActivity {
 	
 	private RestaurantHelper helper = null;
 	
+	private SharedPreferences prefs = null;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +59,9 @@ public class LunchList extends ListActivity {
     }
     
     private void registerEventHandlers() {
-        
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         helper = new RestaurantHelper(this);        
-        model = helper.getAll();
+        model = helper.getAll(prefs.getString("sort_order", "name"));
         startManagingCursor(model);
         adapter = new RestaurantAdapter(model);
         setListAdapter(adapter);
@@ -89,6 +93,9 @@ public class LunchList extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
     	if (item.getItemId() == R.id.add) {
     		startActivity(new Intent(LunchList.this, DetailForm.class));
+    		return true;
+    	} else if (item.getItemId() == R.id.prefs) {
+    		startActivity(new Intent(LunchList.this, EditPreferences.class));
     		return true;
     	}
     	return (super.onOptionsItemSelected(item));

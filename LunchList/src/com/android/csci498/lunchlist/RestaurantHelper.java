@@ -47,9 +47,9 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 		getWritableDatabase().insert("restaurants", "name", cv);
 	}
 	
-	public Cursor getAll() {
+	public Cursor getAll(String orderBy) {
 		return (getReadableDatabase().rawQuery(
-						"SELECT _id, name, address, type, notes FROM restaurants ORDER BY name", 
+						"SELECT _id, name, address, type, notes FROM restaurants ORDER BY " + orderBy, 
 						null));
 	}
 	
