@@ -60,6 +60,8 @@ public class LunchList extends ListActivity {
     
     private void registerEventHandlers() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(prefListener);        
+        
         helper = new RestaurantHelper(this);        
         model = helper.getAll(prefs.getString("sort_order", "name"));
         startManagingCursor(model);
@@ -126,6 +128,7 @@ public class LunchList extends ListActivity {
     		}
     	}
     }
+    
     class RestaurantAdapter extends CursorAdapter {
     	public RestaurantAdapter(Cursor c) {
 			super(LunchList.this, c);
@@ -147,4 +150,16 @@ public class LunchList extends ListActivity {
 			return row;
 		}
     }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+		
+		@Override
+		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+				String key) {
+			if (key.equals("sort_order")) {
+				
+			}
+			
+		}
+	};
 }
