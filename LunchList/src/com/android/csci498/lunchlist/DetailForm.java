@@ -70,6 +70,7 @@ public class DetailForm extends Activity {
 		c.close();
 		
 	}
+
 	
 	private View.OnClickListener onSave = new View.OnClickListener() {
 		
@@ -88,6 +89,20 @@ public class DetailForm extends Activity {
 					type = "@string/type_delivery";
 					break;
 			}
+			
+			if (restaurantId != null) {
+				helper.update(restaurantId, 
+						name.getText().toString(), 
+						address.getText().toString(), 
+						type, 
+						notes.getText().toString());
+			} else {
+				helper.insert(name.getText().toString(), 
+						address.getText().toString(), 
+						type, 
+						notes.getText().toString());
+			}
+			finish();
 		}
 	};
 }

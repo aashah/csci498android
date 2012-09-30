@@ -3,13 +3,13 @@
   android:layout_width="match_parent" 
   android:layout_height="match_parent">
   <ListView
-    android:id="@+id/list"
-    android:layout_width="match_parent"
+    android:id="@android:id/list"
+    android:layout_width="match_parent" 
     android:layout_height="match_parent"
   />
   <TextView
-    android:id="@+id/empty"
+    android:id="@android:id/empty"
     android:layout_width="match_parent" 
     android:layout_height="match_parent"
-    android:text="Click the MENU button to add a restaurant!"/>
+    android:text="@string/howto_add_rest"/>
 </FrameLayout>

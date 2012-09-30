@@ -1,4 +1,3 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/toast" android:icon="@drawable/toast" android:title="Raise Toast" />
-    <item android:id="@+id/run" android:title="Run Long Task" android:icon="@drawable/run" />
+	<item android:id="@+id/add" android:title="Add" android:icon="@drawable/ic_menu_add" />
 </menu>
