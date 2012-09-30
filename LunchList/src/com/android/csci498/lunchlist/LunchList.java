@@ -28,12 +28,6 @@ public class LunchList extends ListActivity {
 	Cursor model;
 	RestaurantAdapter adapter = null;
 	
-	private EditText name = null;
-	private EditText address = null;
-	private EditText notes = null;
-	private RadioGroup types = null;
-	private Restaurant current = null;
-	
 	private RestaurantHelper helper = null;
 	
 	private SharedPreferences prefs = null;
@@ -44,25 +38,25 @@ public class LunchList extends ListActivity {
         setContentView(R.layout.main);
         
         Log.i("LunchList", "Starting up application");
+
+        helper = new RestaurantHelper(this);
         
-        retrieveFormHandlers();
         registerEventHandlers();
+        initList();
         
        
-    }
-    
-    private void retrieveFormHandlers() {
-        this.name = (EditText) findViewById(R.id.name);
-        this.address = (EditText) findViewById(R.id.addr);
-        this.types = (RadioGroup) findViewById(R.id.types);
-        this.notes = (EditText) findViewById(R.id.notes);
     }
     
     private void registerEventHandlers() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(prefListener);        
-        
-        helper = new RestaurantHelper(this);        
+    }
+    
+    private void initList() {
+    	if (model != null) {
+    		stopManagingCursor(model);
+    		model.close();
+    	}
         model = helper.getAll(prefs.getString("sort_order", "name"));
         startManagingCursor(model);
         adapter = new RestaurantAdapter(model);
@@ -157,7 +151,7 @@ public class LunchList extends ListActivity {
 		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 				String key) {
 			if (key.equals("sort_order")) {
-				
+				initList();
 			}
 			
 		}
