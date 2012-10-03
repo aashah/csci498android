@@ -47,22 +47,6 @@ public class LunchList extends ListActivity {
        
     }
     
-    private void registerEventHandlers() {
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.registerOnSharedPreferenceChangeListener(prefListener);        
-    }
-    
-    private void initList() {
-    	if (model != null) {
-    		stopManagingCursor(model);
-    		model.close();
-    	}
-        model = helper.getAll(prefs.getString("sort_order", "name"));
-        startManagingCursor(model);
-        adapter = new RestaurantAdapter(model);
-        setListAdapter(adapter);
-    }
-    
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -95,6 +79,22 @@ public class LunchList extends ListActivity {
     		return true;
     	}
     	return (super.onOptionsItemSelected(item));
+    }
+    
+    private void registerEventHandlers() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(prefListener);        
+    }
+    
+    private void initList() {
+    	if (model != null) {
+    		stopManagingCursor(model);
+    		model.close();
+    	}
+        model = helper.getAll(prefs.getString("sort_order", "name"));
+        startManagingCursor(model);
+        adapter = new RestaurantAdapter(model);
+        setListAdapter(adapter);
     }
     
     static class RestaurantHolder {

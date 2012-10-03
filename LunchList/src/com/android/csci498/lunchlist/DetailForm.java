@@ -31,6 +31,17 @@ public class DetailForm extends Activity {
         processIntentData();
 	}
 	
+    @Override
+    public void onSaveInstanceState(Bundle state) {
+    	super.onSaveInstanceState(state);
+    	
+    	state.putString("name", name.getText().toString());
+    	state.putString("address", address.getText().toString());
+    	state.putString("notes", notes.getText().toString());
+    	state.putInt("type", types.getCheckedRadioButtonId());
+    	
+    }
+    
 	public void retrieveFormHandlers() {
 		
 		name = (EditText) findViewById(R.id.name);
