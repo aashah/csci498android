@@ -3,6 +3,8 @@ package com.android.csci498.lunchlist;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +57,12 @@ public class DetailForm extends Activity {
     	
     }
     
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	new MenuInflater(this).inflate(R.menu.detail_option, menu);
+    	return (super.onCreateOptionsMenu(menu));
+    }
+    
 	public void retrieveFormHandlers() {
 		
 		name = (EditText) findViewById(R.id.name);
@@ -89,6 +97,7 @@ public class DetailForm extends Activity {
 		address.setText(helper.getAddress(c));
 		notes.setText(helper.getNotes(c));
 		feed.setText(helper.getFeed(c));
+		
 		
 		if (helper.getType(c).equals("@string/type_sit_down")) {
 			types.check(R.id.sit_down);
