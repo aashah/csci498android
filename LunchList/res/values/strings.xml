@@ -6,11 +6,18 @@
     <string name="title_activity_lunch_list">LunchList</string>
     
     <!--  Form Strings -->
+    <string name="name_label">Name: </string>
+    <string name="address_label">Address: </string>
+    <string name="type_label">Type: </string>
+    <string name="notes_label">Notes: </string>
+    <string name="location_label">Location: </string>
+    
     <string name="type_take_out">Take Out</string>
     <string name="type_sit_down">Sit Down</string>
     <string name="type_delivery">Delivery</string>
-    <string name="notes_label">Notes: </string>
     <string name="button_save">Save</string>
+    <string name="default_location_value">Not set.</string>
+    
     
     <string name="howto_add_rest">Click the MENU button to add a restaurant!</string>
 

@@ -9,21 +9,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DetailForm extends Activity {
-	
-	
 	
 	EditText name;
 	EditText address;
 	EditText notes;
 	EditText feed;
 	RadioGroup types;
+	TextView location;
 	
 	RestaurantHelper helper;
 	
@@ -37,6 +35,12 @@ public class DetailForm extends Activity {
         retrieveFormHandlers();
         registerEventHandlers();
         processIntentData();
+	}
+	
+	@Override
+	public void onPause() {
+		save();
+		super.onPause();
 	}
 	
     @Override
@@ -95,13 +99,12 @@ public class DetailForm extends Activity {
 		notes = (EditText) findViewById(R.id.notes);
 		feed = (EditText) findViewById(R.id.feed); 
 		types = (RadioGroup) findViewById(R.id.types);
+		location = (TextView) findViewById(R.id.location);
 		
 	}
 	public void registerEventHandlers() {
 		
 		helper = new RestaurantHelper(this);
-		Button save = (Button) findViewById(R.id.save);
-		save.setOnClickListener(onSave);
 		
 	}
 	
@@ -132,44 +135,42 @@ public class DetailForm extends Activity {
 			types.check(R.id.delivery);
 		}
 		
+		location.setText(String.valueOf(helper.getLatitude(c)) 
+				+ "," 
+				+ String.valueOf(helper.getLongitude(c)));
 		c.close();
 		
 	}
 
 	
-	private View.OnClickListener onSave = new View.OnClickListener() {
+	public void save() {
+		String type = null;
 		
-		@Override
-		public void onClick(View v) {
-			String type = null;
-			
-			switch (types.getCheckedRadioButtonId()) {
-				case R.id.sit_down:
-					type = "@string/type_take_out";
-					break;
-				case R.id.take_out:
-					type = "@string/type_sit_down";
-					break;
-				case R.id.delivery:
-					type = "@string/type_delivery";
-					break;
-			}
-			
-			if (restaurantId != null) {
-				helper.update(restaurantId, 
-						name.getText().toString(), 
-						address.getText().toString(), 
-						type, 
-						notes.getText().toString(),
-						feed.getText().toString());
-			} else {
-				helper.insert(name.getText().toString(), 
-						address.getText().toString(), 
-						type, 
-						notes.getText().toString(),
-						feed.getText().toString());
-			}
-			finish();
+		switch (types.getCheckedRadioButtonId()) {
+			case R.id.sit_down:
+				type = "@string/type_take_out";
+				break;
+			case R.id.take_out:
+				type = "@string/type_sit_down";
+				break;
+			case R.id.delivery:
+				type = "@string/type_delivery";
+				break;
 		}
-	};
+		
+		if (restaurantId != null) {
+			helper.update(restaurantId, 
+					name.getText().toString(), 
+					address.getText().toString(), 
+					type, 
+					notes.getText().toString(),
+					feed.getText().toString());
+		} else {
+			helper.insert(name.getText().toString(), 
+					address.getText().toString(), 
+					type, 
+					notes.getText().toString(),
+					feed.getText().toString());
+		}
+	}
 }

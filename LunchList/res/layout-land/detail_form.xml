@@ -8,19 +8,19 @@
     android:shrinkColumns="2"
     >
     <TableRow>
-      <TextView android:text="Name:" />
+      <TextView android:text="@string/name_label" />
       <EditText android:id="@+id/name"
         android:layout_span="2"
       />
     </TableRow>
     <TableRow>
-      <TextView android:text="Address:" />
+      <TextView android:text="@string/address_label" />
       <EditText android:id="@+id/addr"
         android:layout_span="2"
       />
     </TableRow>
     <TableRow>
-      <TextView android:text="Type:" />
+      <TextView android:text="@string/type_label" />
       <RadioGroup android:id="@+id/types">
         <RadioButton android:id="@+id/take_out"
           android:text="@string/type_take_out"
@@ -49,12 +49,18 @@
             android:hint="Feed URL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            /> 
-        <Button android:id="@+id/save"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/button_save"
-        />
+            />
+        <LinearLayout>
+	        <TextView android:text="@string/location_label"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	         />
+	         <TextView android:id="@+id/location"
+	           android:text="@string/default_location_value"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	         />
+        </LinearLayout>
       </LinearLayout>
     </TableRow>
   </TableLayout>
