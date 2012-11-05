@@ -35,6 +35,11 @@
         <activity android:name=".RestaurantMap"></activity>
         
         <service android:name=".FeedService"></service>
+        <receiver android:name=".OnBootReceiver" android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
