@@ -16,4 +16,11 @@
         android:defaultValue="12:00"
         android:summary="Set your desired time for the lunch alarm"
         android:dependency="alarm" />
+    <CheckBoxPreference
+	    android:key="use_notification"
+	    android:title="Use a Notification"
+	    android:defaultValue="true"
+	    android:summary="Check if you want a status bar icon at lunchtime, or 
+	uncheck for a full-screen notice"
+	    android:dependency="alarm" />
 </PreferenceScreen>
