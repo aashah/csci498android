@@ -6,7 +6,11 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
-    <supports-screens android:largeScreens="true" android:smallScreens="false" android:xlargeScreens="true" android:normalScreens="true"/>
+    <supports-screens 
+        android:largeScreens="true" 
+        android:smallScreens="false" 
+        android:xlargeScreens="true" 
+        android:normalScreens="true" />
     
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -29,15 +33,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".DetailForm">
-		</activity>
+        <activity android:name=".DetailForm"></activity>
         <activity android:name=".EditPreferences"></activity>
         <activity android:name=".FeedActivity"></activity>
         <activity android:name=".RestaurantMap"></activity>
         <activity android:name=".AlarmActivity"></activity>
         
         <service android:name=".FeedService"></service>
+        <service android:name=".WidgetService"></service>
+        
         <receiver android:name=".OnBootReceiver" android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
