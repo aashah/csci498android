@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="15" />
     <supports-screens 
         android:largeScreens="true" 
@@ -41,6 +41,10 @@
         
         <service android:name=".FeedService"></service>
         <service android:name=".WidgetService"></service>
+        
+        <service android:name=".ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
+        </service>
         
         <receiver android:name=".OnBootReceiver" android:enabled="false">
             <intent-filter>
