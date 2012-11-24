@@ -21,7 +21,7 @@ public class AppWidget extends AppWidgetProvider {
 	private void onHCUpdate(Context ctxt, AppWidgetManager mgr,
 			int[] appWidgetIds) {
 		for (int i = 0; i < appWidgetIds.length; ++i) {
-			Intent svcIntent = new Intent(this, ListWidgetService.class);
+			Intent svcIntent = new Intent(ctxt, ListWidgetService.class);
 			
 			svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[1]);
 			svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
