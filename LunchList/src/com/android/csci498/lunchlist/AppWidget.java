@@ -23,7 +23,7 @@ public class AppWidget extends AppWidgetProvider {
 		for (int i = 0; i < appWidgetIds.length; ++i) {
 			Intent svcIntent = new Intent(ctxt, ListWidgetService.class);
 			
-			svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[1]);
+			svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
 			svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 			
 			RemoteViews widget = new RemoteViews(ctxt.getPackageName(), R.layout.widget);
