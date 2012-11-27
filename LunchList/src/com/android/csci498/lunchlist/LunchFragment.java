@@ -79,6 +79,7 @@ public class LunchFragment extends ListFragment {
     		startActivity(new Intent(getActivity(), HelpPage.class));
     	}
     	return (super.onOptionsItemSelected(item));
+    
     }
     
     public void setOnRestaurantListener(OnRestaurantListener listener) {
