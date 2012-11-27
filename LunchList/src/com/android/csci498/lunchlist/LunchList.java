@@ -38,7 +38,7 @@ public class LunchList extends FragmentActivity
     				.add(R.id.details, details)
     				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
     				.addToBackStack(null)
-    				.commit();    				
+    				.commit();
     		} else {
     			details.loadRestaurant(String.valueOf(id));
     		}
