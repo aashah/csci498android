@@ -38,6 +38,7 @@
         <activity android:name=".FeedActivity"></activity>
         <activity android:name=".RestaurantMap"></activity>
         <activity android:name=".AlarmActivity"></activity>
+        <activity android:name=".HelpPage"></activity>
         
         <service android:name=".FeedService"></service>
         <service android:name=".WidgetService"></service>
